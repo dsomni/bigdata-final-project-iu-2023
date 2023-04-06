@@ -1,4 +1,9 @@
-# Final project of big data course in IU-2023
+# Final project of Big Data course in IU-2023
+
+## Team
+
+- Dmitry Beresnev (d.beresnev@innopolis.university)
+- Vsevolod Klyushev (v.klyushev@innopolis.university)
 
 ## Structure
 
