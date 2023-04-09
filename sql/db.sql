@@ -36,12 +36,6 @@ create table recommendations(
 	review_id integer not null primary key
 );
 
--- Add constraints
--- FKs
-alter table recommendations add constraint fk_rec_games_app_id foreign key(app_id) references games(app_id);
-
-alter table recommendations add constraint fk_rec_users_user_id foreign key(user_id) references users(user_id);
-
 SET datestyle TO iso, ymd;
 
 \COPY games from 'data/games.csv' delimiter ',' CSV header null as 'null';
@@ -49,6 +43,12 @@ SET datestyle TO iso, ymd;
 \COPY recommendations from 'data/recommendations.csv' delimiter ',' CSV header null as 'null';
 
 commit;
+
+-- Add constraints
+-- FKs
+alter table recommendations add constraint fk_rec_games_app_id foreign key(app_id) references games(app_id);
+
+alter table recommendations add constraint fk_rec_users_user_id foreign key(user_id) references users(user_id);
 
 select * from users limit 5;
 select * from games limit 5;
