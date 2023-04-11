@@ -12,9 +12,9 @@ CREATE EXTERNAL TABLE users STORED AS AVRO LOCATION '/project/users' TBLPROPERTI
 CREATE EXTERNAL TABLE recommendations STORED AS AVRO LOCATION '/project/recommendations' TBLPROPERTIES ('avro.schema.url'='/project/avsc/recommendations.avsc');
 
 
-SELECT * FROM games;
-SELECT * FROM recommendations;
-SELECT * FROM users;
+SELECT count(*) FROM games;
+SELECT count(*) FROM recommendations;
+SELECT count(*) FROM users;
 
 
 
