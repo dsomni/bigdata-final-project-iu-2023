@@ -6,10 +6,10 @@ echo "Running pre-processing"
 
 # Run the big data pipeline
 echo "Running Stage 1 of the pipeline - PostgreSQL + Sqoop"
-#bash scripts/stage1.sh
+# bash scripts/stage1.sh
 
 echo "Running Stage 2 of the pipeline - Hive + Spark SQL"
-bash scripts/stage2.sh
+# bash scripts/stage2.sh
 
 echo "Running Stage 3 of the pipeline - Spark ML"
 bash scripts/stage3.sh

@@ -48,5 +48,5 @@ create external table recommendations_part(
 
 
 insert into games_part partition (rating, linux, mac) SELECT app_id, title, cast(to_date(from_utc_timestamp(date_release, "+00")) as date) as date_release, win, positive_ratio, user_reviews, price_final, price_original, discount, steam_deck, rating, linux, mac FROM games;
-insert into users_part SELECT * FROM users limit 5;
+insert into users_part SELECT * FROM users;
 insert into recommendations_part partition (is_recommended) SELECT app_id, helpful, funny,  cast(to_date(from_utc_timestamp(`date`, "+00")) as date) as date_review, hours, user_id, review_id, is_recommended  FROM recommendations;
