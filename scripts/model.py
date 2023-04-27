@@ -23,7 +23,7 @@ games.createOrReplaceTempView('games')
 recommendations = spark.read.format("avro").table('projectdb.recommendations_part')
 recommendations.createOrReplaceTempView('recommendations')
 
-users = spark.read.format("avro").table('projectdb.users')
+users = spark.read.format("avro").table('projectdb.users_part')
 users.createOrReplaceTempView('users')
 
 games.printSchema()

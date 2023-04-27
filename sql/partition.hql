@@ -22,7 +22,7 @@ create external table games_part(
         steam_deck boolean
 ) 	partitioned by (rating varchar(32), linux boolean, mac boolean)
 	clustered by (app_id) into 10 buckets
-	stored as avro location '/projectdata'
+	stored as avro location '/project/projectdata/games_part'
 	tblproperties ('AVRO.COMPRESS'='SNAPPY');
 
 create external table users_part(
@@ -30,7 +30,7 @@ create external table users_part(
         products int,
         reviews int
 ) 	clustered by (user_id) into 50 buckets
-	stored as avro location '/projectdata'
+	stored as avro location '/project/projectdata/users_part'
         tblproperties ('AVRO.COMPRESS'='SNAPPY');
 
 create external table recommendations_part(
@@ -43,7 +43,7 @@ create external table recommendations_part(
         review_id int
 ) 	partitioned by (is_recommended boolean)
 	clustered by (review_id) into 100 buckets
-	stored as avro location '/projectdata'
+	stored as avro location '/project/projectdata/recommendations_part'
         tblproperties ('AVRO.COMPRESS'='SNAPPY');
 
 
