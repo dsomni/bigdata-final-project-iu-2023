@@ -53,6 +53,8 @@ WITH game_reviews AS (
 INSERT OVERWRITE LOCAL DIRECTORY '/root/q5'
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
+SELECT *, ROUND(CAST((reviews_number/games_number) AS DECIMAL), 3) AS avg_reviews_per_game
+FROM (
 SELECT year(date_release) AS published_year,
 COUNT(*) AS games_number,
 COALESCE(SUM(game_reviews.reviews), 0) AS reviews_number,
@@ -60,4 +62,11 @@ ROUND(CAST(AVG(price_original) AS DECIMAL), 3) AS avg_price_original,
 ROUND(CAST(AVG(price_final) AS DECIMAL), 3) AS avg_price_final
 FROM games_part LEFT JOIN game_reviews ON games_part.app_id = game_reviews.app_id
 GROUP BY year(date_release)
-ORDER BY reviews_number DESC;
+ORDER BY reviews_number DESC) AS temp;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/root/q6'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+SELECT title, date_release, rating, positive_ratio, user_reviews 
+FROM games_part
+WHERE DATE_PART('Year', date_release) = 1998;

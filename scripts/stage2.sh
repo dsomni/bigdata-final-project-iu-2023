@@ -20,5 +20,8 @@ cat /root/q3/* >> output/q3.csv
 echo "is_recommended, avg_hours" > output/q4.csv
 cat /root/q4/* >> output/q4.csv
 
-echo "published_year, games_number, reviews_number, avg_price_original, avg_price_final" > output/q5.csv
+echo "published_year, games_number, reviews_number, avg_price_original, avg_price_final, avg_reviews_per_game" > output/q5.csv
 cat /root/q5/* >> output/q5.csv
+
+echo "title, date_release, rating, positive_ratio, user_reviews" > output/q6.csv
+cat /root/q6/* >> output/q6.csv
