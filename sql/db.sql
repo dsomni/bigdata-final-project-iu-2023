@@ -1,4 +1,4 @@
-\c project;
+--\c project;
 
 -- Optional
 START TRANSACTION;
