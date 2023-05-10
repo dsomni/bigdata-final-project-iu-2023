@@ -69,4 +69,4 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 SELECT title, date_release, rating, positive_ratio, user_reviews 
 FROM games_part
-WHERE DATE_PART('Year', date_release) = 1998;
+WHERE year(date_release) = 1998;
