@@ -1,3 +1,4 @@
+from __future__ import print_function
 from pyspark.sql import SparkSession
 from pyspark.sql.types import IntegerType, ArrayType, DoubleType
 from pyspark.ml.evaluation import RegressionEvaluator, RankingEvaluator
@@ -84,10 +85,10 @@ ndcg_evaluator = RankingEvaluator(
 
 
 def get_preferences_list(s, k=5):
-    without_unliked = filter(lambda x: x[1] > 1, s)
-    res = list(
-        map(lambda x: x[0], sorted(without_unliked, key=lambda x: x[1], reverse=True))
-    )
+    without_unliked = [el for el in s if el[1] > 1]
+
+    res = [ell[0] for ell in sorted(without_unliked, key=lambda x: x[1], reverse=True)]
+
     if k is None:
         return res
     return res[:k]
@@ -183,13 +184,10 @@ cv_als = CrossValidator(
 cv_als_model = cv_als.fit(als_train_data)
 
 
-als_params_mapped = list(
-    map(lambda x: dict(map(lambda y: (y[0].name, y[1]), x.items())), als_params)
-)
+
+als_params_mapped = [ dict([(y_als[0].name, y_als[1]) for y_als in x_als.items()]) for x_als in als_params ]
 als_param_names = list(als_params_mapped[0].keys())
-cv_als_config = list(
-    map(lambda x: [float(x[name]) for name in als_param_names], als_params_mapped)
-)
+cv_als_config = [ [float(x[name]) for name in als_param_names] for x in als_params_mapped]
 cv_als_config_df = spark.createDataFrame(data=cv_als_config, schema=als_param_names)
 cv_als_config_df.show()
 cv_als_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
@@ -301,7 +299,7 @@ features_pipeline_model_svc = pipeline.fit(df_games_rec)
 df_games_enc = features_pipeline_model_svc.transform(df_games_rec)
 df_games_enc.show()
 
-rf_features = [(x,) for x in feature_columns_rf]
+rf_features = [(c,) for c in feature_columns_rf]
 rf_features_df = spark.createDataFrame(data=rf_features, schema=["feature"])
 rf_features_df.show()
 rf_features_df.coalesce(1).write.mode("overwrite").format("csv").option(
@@ -333,13 +331,10 @@ cv_rf = CrossValidator(
 cv_rf_model = cv_rf.fit(rf_train_data)
 
 
-rf_params_mapped = list(
-    map(lambda x: dict(map(lambda y: (y[0].name, y[1]), x.items())), rf_params)
-)
+
+rf_params_mapped = [ dict([(y_rf[0].name, y_rf[1]) for y_rf in x_rf.items()]) for x_rf in rf_params ]
 rf_param_names = list(rf_params_mapped[0].keys())
-cv_rf_config = list(
-    map(lambda x: [float(x[name]) for name in rf_param_names], rf_params_mapped)
-)
+cv_rf_config = [ [float(x[name]) for name in rf_param_names] for x in rf_params_mapped]
 cv_rf_config_df = spark.createDataFrame(data=cv_rf_config, schema=rf_param_names)
 cv_rf_config_df.show()
 cv_rf_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
