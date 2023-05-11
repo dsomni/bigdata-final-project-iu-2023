@@ -184,10 +184,13 @@ cv_als = CrossValidator(
 cv_als_model = cv_als.fit(als_train_data)
 
 
-
-als_params_mapped = [ dict([(y_als[0].name, y_als[1]) for y_als in x_als.items()]) for x_als in als_params ]
+als_params_mapped = [
+    dict([(y_als[0].name, y_als[1]) for y_als in x_als.items()]) for x_als in als_params
+]
 als_param_names = list(als_params_mapped[0].keys())
-cv_als_config = [ [float(x[name]) for name in als_param_names] for x in als_params_mapped]
+cv_als_config = [
+    [float(x[name]) for name in als_param_names] for x in als_params_mapped
+]
 cv_als_config_df = spark.createDataFrame(data=cv_als_config, schema=als_param_names)
 cv_als_config_df.show()
 cv_als_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
@@ -331,10 +334,11 @@ cv_rf = CrossValidator(
 cv_rf_model = cv_rf.fit(rf_train_data)
 
 
-
-rf_params_mapped = [ dict([(y_rf[0].name, y_rf[1]) for y_rf in x_rf.items()]) for x_rf in rf_params ]
+rf_params_mapped = [
+    dict([(y_rf[0].name, y_rf[1]) for y_rf in x_rf.items()]) for x_rf in rf_params
+]
 rf_param_names = list(rf_params_mapped[0].keys())
-cv_rf_config = [ [float(x[name]) for name in rf_param_names] for x in rf_params_mapped]
+cv_rf_config = [[float(x[name]) for name in rf_param_names] for x in rf_params_mapped]
 cv_rf_config_df = spark.createDataFrame(data=cv_rf_config, schema=rf_param_names)
 cv_rf_config_df.show()
 cv_rf_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
