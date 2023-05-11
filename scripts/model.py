@@ -11,6 +11,7 @@ import pyspark.sql.functions as F
 
 
 SAVE_LIMIT = 100
+PATH = "output/"
 
 
 spark = (
@@ -195,7 +196,7 @@ cv_als_config_df = spark.createDataFrame(data=cv_als_config, schema=als_param_na
 cv_als_config_df.show()
 cv_als_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/cv_als_config")
+).option("header", "true").csv(PATH + "pda/cv_als_config")
 
 
 best_als_regParam = cv_als_model.bestModel._java_obj.parent().getRegParam()
@@ -214,10 +215,10 @@ best_als_params_df = spark.createDataFrame(
 best_als_params_df.show()
 best_als_params_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/best_als_params")
+).option("header", "true").csv(PATH + "pda/best_als_params")
 
 final_als = cv_als_model.bestModel
-final_als.save("/project/models/als")
+final_als.write().overwrite().save(PATH + "models/als")
 
 ## Testing
 
@@ -239,12 +240,12 @@ best_als_scores_df = spark.createDataFrame(
 best_als_scores_df.show()
 best_als_scores_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/best_als_scores")
+).option("header", "true").csv(PATH + "pda/best_als_scores")
 
 
 als_recommendations.limit(SAVE_LIMIT).coalesce(1).write.mode("overwrite").format(
     "json"
-).json("/project/pda/als_recommendations")
+).json(PATH + "pda/als_recommendations")
 
 # Random Forest model
 
@@ -307,7 +308,7 @@ rf_features_df = spark.createDataFrame(data=rf_features, schema=["feature"])
 rf_features_df.show()
 rf_features_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/rf_features")
+).option("header", "true").csv(PATH + "pda/rf_features")
 
 
 rf_data = df_games_enc.select("user_id", "app_id", "is_recommended_enc", "features")
@@ -343,7 +344,7 @@ cv_rf_config_df = spark.createDataFrame(data=cv_rf_config, schema=rf_param_names
 cv_rf_config_df.show()
 cv_rf_config_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/cv_rf_config")
+).option("header", "true").csv(PATH + "pda/cv_rf_config")
 
 
 best_rf_numTrees = cv_rf_model.bestModel._java_obj.parent().getNumTrees()
@@ -360,11 +361,11 @@ best_rf_params_df = spark.createDataFrame(
 best_rf_params_df.show()
 best_rf_params_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/best_rf_params")
+).option("header", "true").csv(PATH + "pda/best_rf_params")
 
 
 final_rf = cv_rf_model.bestModel
-final_rf.save("/project/models/rf")
+final_rf.write().overwrite().save(PATH + "models/rf")
 
 ## Testing
 
@@ -391,9 +392,9 @@ best_rf_scores_df = spark.createDataFrame(
 best_rf_scores_df.show()
 best_rf_scores_df.coalesce(1).write.mode("overwrite").format("csv").option(
     "sep", ","
-).option("header", "true").csv("/project/pda/best_rf_scores")
+).option("header", "true").csv(PATH + "pda/best_rf_scores")
 
 
 rf_recommendations.limit(SAVE_LIMIT).coalesce(1).write.mode("overwrite").format(
     "json"
-).json("/project/pda/rf_recommendations")
+).json(PATH + "pda/rf_recommendations")
